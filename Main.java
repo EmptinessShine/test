@@ -7,6 +7,7 @@ public class Main {
     public static String[] subcategories = new String[10];
     public static String[][] prices = new String[10][10];
     private static String password = "pass";
+    public static String WelcomeMessage = "";
 
 
 
@@ -58,7 +59,7 @@ public class Main {
 
     //КОманды Клиента
     public static void ClientMode(){
-        System.out.println("Welcome to the Magnum shop");
+        System.out.println(WelcomeMessage);
         System.out.println("Client panel:\n0. Back to user select\n1. Show menu\n2. Add to Cart\n3. Show Cart\n4. Add payment method");
 
         boolean valincheck = false; while (!valincheck) {
@@ -81,6 +82,10 @@ public class Main {
                     break;
                 case 4:
                     addPaymentbank();
+                    valincheck = true;
+                    break;
+                case 5:
+                    BuyCart();
                     valincheck = true;
                     break;
                 default:
@@ -142,7 +147,7 @@ public class Main {
     //cнизу все команды АДМИНСКИЕ
     public static void AdminMenu() {
         System.out.println("\nYou are welcome. \nWhat you want do today ");
-        System.out.println("0. Back to user select\n1. Managing category \n2. Managing subcategory \n3. Managing Price\n4. Display Menu\n");
+        System.out.println("0. Back to user select\n1. Managing category \n2. Managing subcategory \n3. Managing Price\n4. Display Menu\n5. Change Welcome message");
         int selectorForAdminMenu = sc.nextInt();
         boolean isValid = false;
         while (!isValid) {
@@ -169,9 +174,10 @@ public class Main {
                     break;
                 case 5:
                     isValid = true;
-                    BuyCart();
+                    MessageEditor();
                     break;
-                }
+            }
+
         }
     }
 
@@ -555,6 +561,14 @@ public class Main {
             System.out.println("Invalid choice. Please try again.");
             ShowSubcategories(indexOfCategory);
         }
+    }
+
+    public static void MessageEditor(){
+        sc.nextLine();
+        System.out.println("Enter new welcome message");
+         WelcomeMessage = sc.nextLine();
+        System.out.println("Done!");
+        AdminMenu();
     }
 
 

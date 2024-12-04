@@ -13,12 +13,13 @@ public class Main {
     private static String password = "pass";
     public static String WelcomeMessage = "";
 
-
-    public static void main(String[] args){
+    // Основной метод, запускающий выбор роли пользователя
+    public static void main(String[] args) {
         roleChoose();
 
     }
 
+    // Метод для выбора роли пользователя (Администратор, Клиент или Выход)
     public static void roleChoose() {
         boolean validInput = false;
         while (!validInput) {
@@ -49,6 +50,8 @@ public class Main {
         }
     }
 
+
+    // Метод для проверки пароля администратора
     public static void CheckAdminPassword() {
         String pass = sc.next();
         if (pass.equals(password)) {
@@ -62,7 +65,7 @@ public class Main {
     }
 
 
-    //КОманды Клиента
+    // Метод для работы в режиме клиента
     public static void ClientMode() {
         System.out.println(WelcomeMessage);
         System.out.println("Client panel:\n0. Back to user select\n1. Show menu\n2. Add to Cart\n3. Show Cart\n4. Buy cart\n5. Add payment method");
@@ -101,6 +104,7 @@ public class Main {
         }
     }
 
+    // Метод для отображения меню клиента
     public static void ShowMenuClient() {
         System.out.println("0. Exit menu");
         for (int i = 0; i < categories.length; i++) {
@@ -120,6 +124,7 @@ public class Main {
         }
     }
 
+    // Метод для отображения подкатегорий клиента
     public static void ShowSubcategoriesClient(int categoryNumber) {
         System.out.println("0. Back to menu");
         if (subcategories[categoryNumber] != null && !subcategories[categoryNumber].isEmpty()) {
@@ -133,20 +138,20 @@ public class Main {
                 }
             }
         } else {
-            System.out.println("No subcategories found.");
+            System.out.println("No subcategories found");
         }
         System.out.println("\nEnter 0 to go back to the main menu:");
         int choice = sc.nextInt();
         if (choice == 0) {
             ShowMenuClient();
         } else {
-            System.out.println("Invalid choice. Please try again.");
+            System.out.println("Invalid choice. Please try again");
             ShowSubcategoriesClient(categoryNumber);
         }
     }
 
 
-    //cнизу все команды АДМИНСКИЕ
+    // Метод для отображения меню администратора
     public static void AdminMenu() {
         System.out.println("\nYou are welcome. \nWhat you want do today ");
         System.out.println("0. Back to user select\n1. Managing category \n2. Managing subcategory \n3. Managing Price\n4. Display Menu\n5. Change Welcome message");
@@ -183,6 +188,7 @@ public class Main {
         }
     }
 
+    // Метод для управления категориями
     public static void CategoryManagment() {
         System.out.println("\nWhat we should do with categories today?\n");
         System.out.println("0. Back to user select\n1. Create new category \n2. Remove category\n3. Show all category\n");
@@ -218,6 +224,7 @@ public class Main {
         }
     }
 
+    // Метод для создания новой категории
     public static void CreatingNewCategory() {
         sc.nextLine();
         System.out.println("Enter name of new category");
@@ -256,6 +263,7 @@ public class Main {
         }
     }
 
+    // Метод для удаления категории
     public static void RemoveCategory() {
         sc.nextLine();
         System.out.print("Write name of category you want to delete. Write 0 to back in category management\n ");
@@ -281,6 +289,7 @@ public class Main {
         CategoryManagment();
     }
 
+    // Метод для отображения всех категорий
     public static void ShowCategory() {
         System.out.println();
         for (int i = 0; i < categories.length; i++) {
@@ -311,6 +320,7 @@ public class Main {
         }
     }
 
+    // Метод для управления подкатегориями
     public static void SubcategoryManagment() {
         System.out.println("\nWelcome to subcategory management what you want to change");
         System.out.println("\n0. Back to user select\n1. Attach new subcategory to Category\n2. Remove subcategory\n3. Show menu\n4. Back to admin menu");
@@ -345,6 +355,7 @@ public class Main {
         }
     }
 
+    // Метод для создания новой подкатегории
     public static void CreatingSubcategory() {
         sc.nextLine();
         System.out.println("\nEnter the name of the category to which you want to attach");
@@ -369,6 +380,7 @@ public class Main {
         SubcategoryManagment();
     }
 
+    // Метод для удаления подкатегории
     public static void RemoveSubcategory() {
         sc.nextLine();
         System.out.println("\nEnter the name of the category from which you want to remove a subcategory");
@@ -402,22 +414,23 @@ public class Main {
 
                     if (subcategoryFound) {
                         subcategories[i] = newSubcategories.toString();
-                        System.out.println("Subcategory removed.");
+                        System.out.println("Subcategory removed");
                     } else {
-                        System.out.println("Subcategory not found.");
+                        System.out.println("Subcategory not found");
                     }
                 } else {
-                    System.out.println("No subcategories found for this category.");
+                    System.out.println("No subcategories found for this category");
                 }
                 break;
             }
         }
         if (!categoryExist) {
-            System.out.println("Category not found. Please try again.");
+            System.out.println("Category not found. Please try again");
         }
         SubcategoryManagment();
     }
 
+    // Метод для управления ценами
     public static void PriceManagment() {
         System.out.println("\nWelcome to price management what you want to change");
         System.out.println("\n0. Back to user select\n1. Attach new price to Subcategory\n2. Remove price\n3. Show menu\n4. Back to admin menu");
@@ -452,6 +465,7 @@ public class Main {
         }
     }
 
+    // Метод для добавления новой цены к подкатегории
     public static void CreatingPrice() {
         sc.nextLine();
         System.out.println("\nEnter the name of the category to which the subcategory belongs");
@@ -478,17 +492,18 @@ public class Main {
                     }
                 }
                 if (!subcategoryExist) {
-                    System.out.println("Subcategory not found. Please try again.");
+                    System.out.println("Subcategory not found. Please try again");
                 }
                 break;
             }
         }
         if (!categoryExist) {
-            System.out.println("Category not found. Please try again.");
+            System.out.println("Category not found. Please try again");
         }
         PriceManagment();
     }
 
+    // Метод для удаления цены из подкатегории
     public static void RemovePrice() {
         sc.nextLine();
         System.out.println("\nEnter the name of the category to which the subcategory belongs");
@@ -521,6 +536,7 @@ public class Main {
         PriceManagment();
     }
 
+    // Метод для отображения меню администратора
     public static void ShowMenu() {
         System.out.println("0. Exit menu");
         for (int i = 0; i < categories.length; i++) {
@@ -540,6 +556,7 @@ public class Main {
         }
     }
 
+    // Метод для отображения подкатегорий администратора
     public static void ShowSubcategories(int CategoryNumber) {
         System.out.println("0. Back to menu");
         if (subcategories[CategoryNumber] != null && !subcategories[CategoryNumber].isEmpty()) {
@@ -565,6 +582,7 @@ public class Main {
         }
     }
 
+    // Метод для редактирования приветственного сообщения
     public static void MessageEditor() {
         sc.nextLine();
         System.out.println("Enter new welcome message");
@@ -580,56 +598,64 @@ public class Main {
     public static int cartIndex = 0;
     public static double totalSum = 0.0;
 
-public static void AddToCart() {
-    System.out.println("\nWrite 0 to get back in Menu\nChoose number of category:");
-    for (int i = 0; i < categories.length; i++) {
-        if (categories[i] != null) {
-            System.out.println((i + 1) + ". " + categories[i]);
-        }
-    }
-    int categoryChoice = sc.nextInt() - 1;
-    if (categoryChoice == -1) {
-        ClientMode();
-    } else if (categoryChoice >= 0 && categoryChoice < categories.length && categories[categoryChoice] != null) {
-        System.out.println("\nWrite 0 to return back in menu\nEnter index of subcategory:");
-        String[] subcategoryArray = subcategories[categoryChoice].split(",");
-        for (int j = 0; j < subcategoryArray.length; j++) {
-            System.out.print((j + 1) + ". " + subcategoryArray[j].trim());
-            if (prices[categoryChoice][j] != null) {
-                System.out.println(". Price: " + prices[categoryChoice][j] + " kzt");
-            } else {
-                System.out.println();
+    // Метод для добавления товаров в корзину
+    public static void AddToCart() {
+
+        //проверяется номер категории
+        System.out.println("\nWrite 0 to get back in Menu\nChoose number of category:");
+        for (int i = 0; i < categories.length; i++) {
+            if (categories[i] != null) {
+                System.out.println((i + 1) + ". " + categories[i]);
             }
         }
-        int subcategoryChoice = sc.nextInt() - 1;
-        if (subcategoryChoice == -1) {
+        int categoryChoice = sc.nextInt() - 1;
+        //выход из выбора
+        if (categoryChoice == -1) {
             ClientMode();
-        } else if (subcategoryChoice >= 0 && subcategoryChoice < subcategoryArray.length) {
-            if (subcategoryArray[subcategoryChoice] != null && prices[categoryChoice][subcategoryChoice] != null) {
-                System.out.println("Enter quantity:");
-                int quantity = sc.nextInt();
-                if (quantity > 0) {
-                    cart[cartIndex++] = subcategoryArray[subcategoryChoice].trim() + " x" + quantity;
-                    totalSum += Double.parseDouble(prices[categoryChoice][subcategoryChoice]) * quantity;
-                    System.out.println("Subcategory added. Total price: " + totalSum + " kzt");
+
+            //если категория действительно существует
+        } else if (categoryChoice >= 0 && categoryChoice < categories.length && categories[categoryChoice] != null) {
+            System.out.println("\nWrite 0 to return back in menu\nEnter index of subcategory:");
+            String[] subcategoryArray = subcategories[categoryChoice].split(",");
+            for (int j = 0; j < subcategoryArray.length; j++) {
+                System.out.print((j + 1) + ". " + subcategoryArray[j].trim());
+                if (prices[categoryChoice][j] != null) {
+                    System.out.println(". Price: " + prices[categoryChoice][j] + " kzt");
                 } else {
-                    System.out.println("Incorrect quantity.");
+                    System.out.println();
                 }
-            } else {
-                System.out.println("Incorrect select.");
             }
-            AddToCart();
+            int subcategoryChoice = sc.nextInt() - 1;
+            if (subcategoryChoice == -1) {
+                ClientMode();
+            } else if (subcategoryChoice >= 0 && subcategoryChoice < subcategoryArray.length) {
+                if (subcategoryArray[subcategoryChoice] != null && prices[categoryChoice][subcategoryChoice] != null) {
+                    System.out.println("Enter quantity:");
+                    int quantity = sc.nextInt();
+                    if (quantity > 0) {
+                        cart[cartIndex++] = subcategoryArray[subcategoryChoice].trim() + " x" + quantity;
+                        totalSum += Double.parseDouble(prices[categoryChoice][subcategoryChoice]) * quantity;
+                        System.out.println("Subcategory added. Total price: " + totalSum + " kzt");
+                    } else {
+                        System.out.println("Incorrect quantity");
+                    }
+                } else {
+                    System.out.println("Incorrect select");
+                }
+                AddToCart();
+            } else {
+                System.out.println("Incorrect select");
+                AddToCart();
+            }
         } else {
-            System.out.println("Incorrect select.");
+            System.out.println("Incorrect select");
             AddToCart();
         }
-    } else {
-        System.out.println("Incorrect select.");
-        AddToCart();
     }
-}
+
 
     public static void ShowCart() {
+        //тут показывается корзина
         System.out.println("Cart:");
         for (int i = 0; i < cart.length; i++) {
             if (cart[i] != null) {
@@ -644,6 +670,7 @@ public static void AddToCart() {
     public static boolean dateCheck = false;
     public static boolean CVVcheck = false;
 
+    // Метод для добавления банковской карты
     public static void addPaymentbank() {
         sc.nextLine();
 
@@ -651,6 +678,8 @@ public static void AddToCart() {
         dateCheck = false;
         CVVcheck = false;
 
+
+        //Здесь проверяется карту на корректность
         System.out.print("\nEnter your card number(16 digits): ");
         String s = sc.nextLine();
         if (s.length() == 16) {
@@ -676,8 +705,11 @@ public static void AddToCart() {
     }
 
 
+    // Метод для покупки товаров из корзины
     public static void BuyCart() {
 
+
+        //тут пишется файл с чеком в check.txt
         if (cardCheck && dateCheck && CVVcheck) {
             System.out.println("\n----------------------\nThank you for purchase : " + totalSum + " kzt\n-------------------------\n");
             try (FileWriter fw = new FileWriter(filename, true)) {

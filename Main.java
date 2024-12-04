@@ -1,28 +1,33 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Main {
+    public static String filename = "Check.txt";
+
     public static Scanner sc = new Scanner(System.in);
     public static String[] categories = new String[10];
     public static String[] subcategories = new String[10];
     public static String[][] prices = new String[10][10];
-    private static final String password = "pass";
+    private static String password = "pass";
     public static String WelcomeMessage = "";
 
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args){
         roleChoose();
+
     }
 
     public static void roleChoose() {
-        System.out.println("Welcome to the Supermarket \"ff\" Magnum tipo \nChoose user you want to login");
-        System.out.println("\n1.Admin \n2.Client\n3.Exit");
-
-        int roleChoose = sc.nextInt();
-        sc.nextLine();
         boolean validInput = false;
         while (!validInput) {
+            System.out.println("Welcome to the \"Magnum\" Supermarket\nChoose user you want to log in");
+            System.out.println("\n1.Admin \n2.Client\n3.Exit");
+            System.out.print("Choose Role: ");
+
+            int roleChoose = sc.nextInt();
+            sc.nextLine();
             switch (roleChoose) {
                 case 1:
                     System.out.println("Enter admin password\n");
@@ -34,12 +39,11 @@ public class Main {
                     validInput = true;
                     break;
                 case 3:
-                    System.out.println("Goodbye!See you soon");
+                    System.out.println("Goodbye! See you soon");
                     validInput = true;
                     break;
                 default:
-                    System.out.println("Command not found please enter existing command");
-                    roleChoose();
+                    System.out.println("Command not found, please enter an existing command");
                     break;
             }
         }
@@ -58,13 +62,12 @@ public class Main {
     }
 
 
-
     //КОманды Клиента
-    public static void ClientMode(){
+    public static void ClientMode() {
         System.out.println(WelcomeMessage);
         System.out.println("Client panel:\n0. Back to user select\n1. Show menu\n2. Add to Cart\n3. Show Cart\n4. Buy cart\n5. Add payment method");
-
-        boolean valincheck = false; while (!valincheck) {
+        boolean valincheck = false;
+        while (!valincheck) {
             switch (sc.nextInt()) {
                 case 0:
                     roleChoose();
@@ -97,6 +100,7 @@ public class Main {
             }
         }
     }
+
     public static void ShowMenuClient() {
         System.out.println("0. Exit menu");
         for (int i = 0; i < categories.length; i++) {
@@ -140,10 +144,6 @@ public class Main {
             ShowSubcategoriesClient(categoryNumber);
         }
     }
-
-
-
-
 
 
     //cнизу все команды АДМИНСКИЕ
@@ -565,14 +565,13 @@ public class Main {
         }
     }
 
-    public static void MessageEditor(){
+    public static void MessageEditor() {
         sc.nextLine();
         System.out.println("Enter new welcome message");
-         WelcomeMessage = sc.nextLine();
+        WelcomeMessage = sc.nextLine();
         System.out.println("Done!");
         AdminMenu();
     }
-
 
 
     //Команды для корзины
@@ -581,16 +580,18 @@ public class Main {
     public static int cartIndex = 0;
     public static double totalSum = 0.0;
 
-    public static void AddToCart() {
-    System.out.println("Choose number of category:");
+public static void AddToCart() {
+    System.out.println("\nWrite 0 to get back in Menu\nChoose number of category:");
     for (int i = 0; i < categories.length; i++) {
         if (categories[i] != null) {
             System.out.println((i + 1) + ". " + categories[i]);
         }
     }
     int categoryChoice = sc.nextInt() - 1;
-    if (categoryChoice >= 0 && categoryChoice < categories.length && categories[categoryChoice] != null) {
-        System.out.println("Enter index of subcategory:");
+    if (categoryChoice == -1) {
+        ClientMode();
+    } else if (categoryChoice >= 0 && categoryChoice < categories.length && categories[categoryChoice] != null) {
+        System.out.println("\nWrite 0 to return back in menu\nEnter index of subcategory:");
         String[] subcategoryArray = subcategories[categoryChoice].split(",");
         for (int j = 0; j < subcategoryArray.length; j++) {
             System.out.print((j + 1) + ". " + subcategoryArray[j].trim());
@@ -601,22 +602,33 @@ public class Main {
             }
         }
         int subcategoryChoice = sc.nextInt() - 1;
-        if (subcategoryChoice >= 0 && subcategoryChoice < subcategoryArray.length) {
+        if (subcategoryChoice == -1) {
+            ClientMode();
+        } else if (subcategoryChoice >= 0 && subcategoryChoice < subcategoryArray.length) {
             if (subcategoryArray[subcategoryChoice] != null && prices[categoryChoice][subcategoryChoice] != null) {
-                cart[cartIndex++] = subcategoryArray[subcategoryChoice].trim();
-                totalSum += Double.parseDouble(prices[categoryChoice][subcategoryChoice]);
-                System.out.println("Subcategory added. Total price: " + totalSum + " kzt");
+                System.out.println("Enter quantity:");
+                int quantity = sc.nextInt();
+                if (quantity > 0) {
+                    cart[cartIndex++] = subcategoryArray[subcategoryChoice].trim() + " x" + quantity;
+                    totalSum += Double.parseDouble(prices[categoryChoice][subcategoryChoice]) * quantity;
+                    System.out.println("Subcategory added. Total price: " + totalSum + " kzt");
+                } else {
+                    System.out.println("Incorrect quantity.");
+                }
             } else {
                 System.out.println("Incorrect select.");
             }
-            ClientMode();
+            AddToCart();
         } else {
             System.out.println("Incorrect select.");
+            AddToCart();
         }
     } else {
         System.out.println("Incorrect select.");
+        AddToCart();
     }
 }
+
     public static void ShowCart() {
         System.out.println("Cart:");
         for (int i = 0; i < cart.length; i++) {
@@ -627,57 +639,68 @@ public class Main {
         System.out.println("Total sum: " + totalSum + " kzt");
         ClientMode();
     }
+
     public static boolean cardCheck = false;
     public static boolean dateCheck = false;
     public static boolean CVVcheck = false;
 
-   public static void addPaymentbank() {
-    sc.nextLine();
+    public static void addPaymentbank() {
+        sc.nextLine();
 
-    cardCheck = false;
-    dateCheck = false;
-    CVVcheck = false;
+        cardCheck = false;
+        dateCheck = false;
+        CVVcheck = false;
 
-    System.out.println("Enter your card number(16 digits)");
-    String s = sc.nextLine();
-    if (s.length() == 16) {
-        cardCheck = true;
-        System.out.println("Enter your card date YY/MM");
-        String cardDate = sc.nextLine();
-        if (cardDate.length() == 5 && cardDate.contains("/")) {
-            dateCheck = true;
-            System.out.println("Enter your CVV (3 digits)");
-            String cvv = sc.next();
-            if (cvv.length() == 3) {
-                CVVcheck = true;
+        System.out.print("\nEnter your card number(16 digits): ");
+        String s = sc.nextLine();
+        if (s.length() == 16) {
+            cardCheck = true;
+            System.out.print("\nEnter your card date YY/MM");
+            String cardDate = sc.nextLine();
+            if (cardDate.length() == 5 && cardDate.contains("/")) {
+                dateCheck = true;
+                System.out.print("\nEnter your CVV (3 digits)");
+                String cvv = sc.next();
+                if (cvv.length() == 3) {
+                    CVVcheck = true;
+                }
             }
         }
+        if (cardCheck && dateCheck && CVVcheck) {
+            System.out.println("Bank card added");
+            ClientMode();
+        } else {
+            System.out.println("Try again");
+            addPaymentbank();
+        }
     }
-    if (cardCheck && dateCheck && CVVcheck) {
-        System.out.println("Bank card added");
-        ClientMode();
-    } else {
-        System.out.println("Try again");
-        addPaymentbank();
-    }
-}
-
 
 
     public static void BuyCart() {
 
-    if (cardCheck && dateCheck && CVVcheck) {
-        System.out.println("Thank you for purchase : " + totalSum + " kzt");
-        cart = new String[10];
-        cartIndex = 0;
-        totalSum = 0.0;
-    } else {
-        System.out.println("Please enter card details.");
-        addPaymentbank();
+        if (cardCheck && dateCheck && CVVcheck) {
+            System.out.println("\n----------------------\nThank you for purchase : " + totalSum + " kzt\n-------------------------\n");
+            try (FileWriter fw = new FileWriter(filename, true)) {
+                fw.write("\n---------------------------------------------------------------\nPurchase details:\n");
+                for (String item : cart) {
+                    if (item != null) {
+                        fw.write(item + "\n");
+                    }
+                }
+                fw.write("Total sum: " + totalSum + " kzt\n---------------------------------------------------------------\n");
+            } catch (IOException e) {
+                System.out.println("An error occurred while writing to the file.");
+                e.printStackTrace();
+            }
+            cart = new String[10];
+            cartIndex = 0;
+            totalSum = 0.0;
+        } else {
+            System.out.println("Please enter card details.");
+            addPaymentbank();
+        }
+        ClientMode();
+
+
     }
-    ClientMode();
-}
-
-
-
 }

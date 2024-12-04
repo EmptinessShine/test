@@ -6,7 +6,7 @@ public class Main {
     public static String[] categories = new String[10];
     public static String[] subcategories = new String[10];
     public static String[][] prices = new String[10][10];
-    private static String password = "pass";
+    private static final String password = "pass";
     public static String WelcomeMessage = "";
 
 
@@ -18,6 +18,7 @@ public class Main {
     public static void roleChoose() {
         System.out.println("Welcome to the Supermarket \"ff\" Magnum tipo \nChoose user you want to login");
         System.out.println("\n1.Admin \n2.Client\n3.Exit");
+
         int roleChoose = sc.nextInt();
         sc.nextLine();
         boolean validInput = false;
@@ -33,11 +34,12 @@ public class Main {
                     validInput = true;
                     break;
                 case 3:
-                    validInput = true;
                     System.out.println("Goodbye!See you soon");
+                    validInput = true;
                     break;
                 default:
                     System.out.println("Command not found please enter existing command");
+                    roleChoose();
                     break;
             }
         }
@@ -60,7 +62,7 @@ public class Main {
     //КОманды Клиента
     public static void ClientMode(){
         System.out.println(WelcomeMessage);
-        System.out.println("Client panel:\n0. Back to user select\n1. Show menu\n2. Add to Cart\n3. Show Cart\n4. Add payment method");
+        System.out.println("Client panel:\n0. Back to user select\n1. Show menu\n2. Add to Cart\n3. Show Cart\n4. Buy cart\n5. Add payment method");
 
         boolean valincheck = false; while (!valincheck) {
             switch (sc.nextInt()) {
@@ -80,11 +82,11 @@ public class Main {
                     ShowCart();
                     valincheck = true;
                     break;
-                case 4:
+                case 5:
                     addPaymentbank();
                     valincheck = true;
                     break;
-                case 5:
+                case 4:
                     BuyCart();
                     valincheck = true;
                     break;
@@ -114,14 +116,14 @@ public class Main {
         }
     }
 
-    public static void ShowSubcategoriesClient(int indexOfCategory) {
+    public static void ShowSubcategoriesClient(int categoryNumber) {
         System.out.println("0. Back to menu");
-        if (subcategories[indexOfCategory] != null && !subcategories[indexOfCategory].isEmpty()) {
-            String[] subcategoryArray = subcategories[indexOfCategory].split(",");
+        if (subcategories[categoryNumber] != null && !subcategories[categoryNumber].isEmpty()) {
+            String[] subcategoryArray = subcategories[categoryNumber].split(",");
             for (int j = 0; j < subcategoryArray.length; j++) {
                 System.out.print((j + 1) + ". " + subcategoryArray[j].trim());
-                if (prices[indexOfCategory][j] != null) {
-                    System.out.println(". Price: " + prices[indexOfCategory][j] + " kzt");
+                if (prices[categoryNumber][j] != null) {
+                    System.out.println(". Price: " + prices[categoryNumber][j] + " kzt");
                 } else {
                     System.out.println();
                 }
@@ -135,7 +137,7 @@ public class Main {
             ShowMenuClient();
         } else {
             System.out.println("Invalid choice. Please try again.");
-            ShowSubcategoriesClient(indexOfCategory);
+            ShowSubcategoriesClient(categoryNumber);
         }
     }
 
@@ -389,7 +391,7 @@ public class Main {
                     boolean subcategoryFound = false;
                     for (String subcategory : subcategoryArray) {
                         if (!subcategory.trim().equals(subcategoryToRemove.trim())) {
-                            if (newSubcategories.length() > 0) {
+                            if (!newSubcategories.isEmpty()) {
                                 newSubcategories.append(", ");
                             }
                             newSubcategories.append(subcategory.trim());
@@ -529,7 +531,7 @@ public class Main {
         System.out.println("\nEnter the number of the category to view subcategories or 0 to exit:");
         int choice = sc.nextInt();
         if (choice == 0) {
-            SubcategoryManagment();
+            AdminMenu();
         } else if (choice > 0 && choice <= categories.length && categories[choice - 1] != null) {
             ShowSubcategories(choice - 1);
         } else {
@@ -538,14 +540,14 @@ public class Main {
         }
     }
 
-    public static void ShowSubcategories(int indexOfCategory) {
+    public static void ShowSubcategories(int CategoryNumber) {
         System.out.println("0. Back to menu");
-        if (subcategories[indexOfCategory] != null && !subcategories[indexOfCategory].isEmpty()) {
-            String[] subcategoryArray = subcategories[indexOfCategory].split(",");
+        if (subcategories[CategoryNumber] != null && !subcategories[CategoryNumber].isEmpty()) {
+            String[] subcategoryArray = subcategories[CategoryNumber].split(",");
             for (int j = 0; j < subcategoryArray.length; j++) {
                 System.out.print((j + 1) + ". " + subcategoryArray[j].trim());
-                if (prices[indexOfCategory][j] != null) {
-                    System.out.println(". Price: " + prices[indexOfCategory][j] + " kzt");
+                if (prices[CategoryNumber][j] != null) {
+                    System.out.println(". Price: " + prices[CategoryNumber][j] + " kzt");
                 } else {
                     System.out.println();
                 }
@@ -559,7 +561,7 @@ public class Main {
             ShowMenu();
         } else {
             System.out.println("Invalid choice. Please try again.");
-            ShowSubcategories(indexOfCategory);
+            ShowSubcategories(CategoryNumber);
         }
     }
 
@@ -659,6 +661,9 @@ public class Main {
         addPaymentbank();
     }
 }
+
+
+
     public static void BuyCart() {
 
     if (cardCheck && dateCheck && CVVcheck) {
